@@ -10,6 +10,7 @@ public class EntityAbgasfuehrung {
     @Column(name = "abgasfuehrungid")
     private int abgasfuehrungid;
     @Basic
+
     @Column(name = "anforderung")
     private String anforderung;
 
