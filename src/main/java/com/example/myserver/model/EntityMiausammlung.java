@@ -1,9 +1,6 @@
 package com.example.myserver.model;
 
-import jakarta.persistence.Basic;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "miausammlung", schema = "public")
@@ -14,6 +11,8 @@ public class EntityMiausammlung {
     @Basic
     @Column(name = "mitarbeiterid")
     private Integer mitarbeiterid;
+    @Id
+    private Integer id;
 
     public Integer getAuftragid() {
         return auftragid;
@@ -50,5 +49,13 @@ public class EntityMiausammlung {
         int result = auftragid != null ? auftragid.hashCode() : 0;
         result = 31 * result + (mitarbeiterid != null ? mitarbeiterid.hashCode() : 0);
         return result;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getId() {
+        return id;
     }
 }
