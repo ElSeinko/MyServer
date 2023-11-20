@@ -18,7 +18,7 @@
     <class>com.example.myserver.model.EntityRoab8201Sammlung</class>
       <class>com.example.myserver.model.EntityEndbefund</class>
       <properties>
-      <property name="eclipselink.jdbc.url" value="jdbc:postgresql://localhost:5432/Diplomarbeit"/>
+      <property name="eclipselink.jdbc.url" value="jdbc:postgresql://192.168.1.16:5432/Diplomarbeit"/>
       <property name="eclipselink.jdbc.driver" value="org.postgresql.Driver"/>
       <property name="eclipselink.jdbc.user" value="postgres"/>
       <property name="eclipselink.jdbc.password" value="OnkelHarry"/>
