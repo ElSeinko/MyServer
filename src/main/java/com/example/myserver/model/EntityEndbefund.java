@@ -3,6 +3,7 @@ package com.example.myserver.model;
 import jakarta.persistence.*;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "endbefund", schema = "public")
@@ -79,7 +80,7 @@ public class EntityEndbefund {
     private Integer afAuftellungsjahr;
     @Basic
     @Column(name = "pruefdatum")
-    private Date pruefdatum;
+    private LocalDate pruefdatum;
     @Basic
     @Column(name = "id_auftrag")
     private Integer idAuftrag;
@@ -268,11 +269,11 @@ public class EntityEndbefund {
         this.afAuftellungsjahr = afAuftellungsjahr;
     }
 
-    public Date getPruefdatum() {
+    public LocalDate getPruefdatum() {
         return pruefdatum;
     }
 
-    public void setPruefdatum(Date pruefdatum) {
+    public void setPruefdatum(LocalDate pruefdatum) {
         this.pruefdatum = pruefdatum;
     }
 
