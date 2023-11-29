@@ -22,7 +22,7 @@ public class EndbefundController {
 
     @GET
     @Path("/getWithId/{id}")
-    public String getEndbefundById(@PathParam("id") int id) {
+    public String getWithId(@PathParam("id") int id) {
         em = entityService.startTransaction();
         EntityEndbefund g = em.find(EntityEndbefund.class, id);
         Jsonb jsonb = JsonbBuilder.create();
@@ -32,9 +32,9 @@ public class EndbefundController {
     }
 
     @POST
-    @Path("/changeEndbefund")
+    @Path("/aendern")
     @Consumes(MediaType.APPLICATION_JSON)
-    public String changeEndbefund(String jsonString){
+    public String aendern(String jsonString){
         Jsonb jsonb = JsonbBuilder.create();
         EntityEndbefund ee = jsonb.fromJson(jsonString, EntityEndbefund.class);
         em = entityService.startTransaction();
