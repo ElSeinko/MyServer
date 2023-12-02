@@ -58,7 +58,7 @@ public class KundeController {
     public String aendern(String jsonString){
         Jsonb jsonb = JsonbBuilder.create();
         List<EntityKunde> el = new LinkedList<>();
-
+        List<EntityKunde> list = (List<EntityKunde>) jsonb.fromJson(jsonString, List.class);
 
         String[] splitString = jsonString.split("}");
         EntityKunde ek;
@@ -73,6 +73,7 @@ public class KundeController {
             }
 
             ek = jsonb.fromJson(finishedString, EntityKunde.class);
+
             el.add(ek);
 
         }
