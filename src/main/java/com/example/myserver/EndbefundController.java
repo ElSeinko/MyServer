@@ -2,9 +2,7 @@ package com.example.myserver;
 
 import com.example.myserver.model.EntityEndbefund;
 import com.example.myserver.model.EntityFeuverzul;
-import jakarta.json.JsonReader;
-import jakarta.json.bind.Jsonb;
-import jakarta.json.bind.JsonbBuilder;
+import com.google.gson.Gson;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import jakarta.ws.rs.*;
@@ -19,14 +17,14 @@ import java.util.List;
 public class EndbefundController {
     private EntityService entityService = new EntityService();
     EntityManager em;
+    Gson gson = new Gson();
 
     @GET
     @Path("/getWithId/{id}")
     public String getWithId(@PathParam("id") int id) {
         em = entityService.startTransaction();
         EntityEndbefund g = em.find(EntityEndbefund.class, id);
-        Jsonb jsonb = JsonbBuilder.create();
-        String json = jsonb.toJson(g);
+        String json = gson.toJson(g);
         entityService.commitTransaction();
         return json;
     }
@@ -35,8 +33,7 @@ public class EndbefundController {
     @Path("/aendern")
     @Consumes(MediaType.APPLICATION_JSON)
     public String aendern(String jsonString){
-        Jsonb jsonb = JsonbBuilder.create();
-        EntityEndbefund ee = jsonb.fromJson(jsonString, EntityEndbefund.class);
+        EntityEndbefund ee = gson.fromJson(jsonString, EntityEndbefund.class);
         em = entityService.startTransaction();
         Query query = em.createQuery("UPDATE EntityEndbefund ee SET ee = :endbefund where ee.befundnr = :endbefundBefundnr");
         query.setParameter("endbefund", ee).setParameter("endbefundBefundnr", ee.getBefundnr()).executeUpdate();
@@ -50,8 +47,7 @@ public class EndbefundController {
     public String getAll(){
         em = entityService.startTransaction();
         List<EntityEndbefund> list = em.createQuery("Select ee from EntityEndbefund ee").getResultList();
-        Jsonb jsonb = JsonbBuilder.create();
-        String listJson = jsonb.toJson(list);
+        String listJson = gson.toJson(list);
         entityService.commitTransaction();
         return listJson;
     }

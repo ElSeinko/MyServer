@@ -1,6 +1,5 @@
 package com.example.myserver.model;
 
-import jakarta.ejb.Local;
 import jakarta.persistence.*;
 
 import java.sql.Date;

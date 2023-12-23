@@ -1,7 +1,6 @@
 package com.example.myserver;
 
 import jakarta.persistence.*;
-import jakarta.transaction.Transaction;
 
 public class EntityService {
 
