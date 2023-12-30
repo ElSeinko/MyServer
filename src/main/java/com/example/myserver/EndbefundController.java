@@ -1,7 +1,7 @@
 package com.example.myserver;
 
 import com.example.myserver.model.EntityEndbefund;
-import com.example.myserver.model.EntityFeuverzul;
+import com.example.myserver.model.EntityFmkehrversgemeinde;
 import com.google.gson.Gson;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
@@ -18,6 +18,17 @@ public class EndbefundController {
     private EntityService entityService = new EntityService();
     EntityManager em;
     Gson gson = new Gson();
+
+    @POST
+    @Path("/neu")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String neu(String jsonString){
+        EntityEndbefund ek = gson.fromJson(jsonString, EntityEndbefund.class);
+        em = entityService.startTransaction();
+        em.persist(ek);
+        entityService.commitTransaction();
+        return "true";
+    }
 
     @GET
     @Path("/getWithId/{id}")
