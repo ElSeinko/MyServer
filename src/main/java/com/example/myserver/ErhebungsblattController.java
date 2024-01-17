@@ -3,9 +3,12 @@ package com.example.myserver;
 import com.example.myserver.model.EntityEndbefund;
 import com.example.myserver.model.EntityFmerhebungsblatt;
 import com.example.myserver.model.EntityKunde;
+import com.example.myserver.model.EntityPruefprotokoll;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
 import jakarta.persistence.Query;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -22,10 +25,12 @@ public class ErhebungsblattController {
     @GET
     @Path("/getWithId/{id}")
     public String getWithId(@PathParam("id") int id) {
-        em = entityService.startTransaction();
-        EntityFmerhebungsblatt g = em.find(EntityFmerhebungsblatt.class, id);
-        String json = gson.toJson(g);
-        entityService.commitTransaction();
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("default");
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        EntityFmerhebungsblatt eg = em.find(EntityFmerhebungsblatt.class, id);
+        String json = gson.toJson(eg);
+        em.getTransaction().commit();
         return json;
     }
 
@@ -59,6 +64,7 @@ public class ErhebungsblattController {
         EntityFmerhebungsblatt eb = gson.fromJson(jsonString, EntityFmerhebungsblatt.class);
         em = entityService.startTransaction();
         em.persist(eb);
+        em.flush();
         entityService.commitTransaction();
         return "true";
 

@@ -7,6 +7,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
 import jakarta.persistence.Query;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -19,26 +21,28 @@ import java.util.List;
 @Consumes(MediaType.APPLICATION_JSON)
 @Path("/kunde")
 public class KundeController {
-    private EntityService entityService = new EntityService();
-    EntityManager em;
+    EntityManagerFactory emf = Persistence.createEntityManagerFactory("default");
+    EntityManager em = emf.createEntityManager();
     Gson gson = new Gson();
     @GET
     @Path("/getAll")
     public String getAll(){
-        em = entityService.startTransaction();
+        em.getTransaction().begin();
+        em.clear();
+        em.flush();
         List<EntityKunde> list = em.createQuery("Select k from EntityKunde k").getResultList();
         String listJson = gson.toJson(list);
-        entityService.commitTransaction();
+        em.getTransaction().commit();
         return listJson;
     }
 
     @GET
     @Path("/loeschen/{id}")
     public void loeschen(@PathParam("id") int id) {
-        em = entityService.startTransaction();
+        em.getTransaction().begin();
         EntityKunde g = em.find(EntityKunde.class, id);
         em.remove(g);
-        entityService.commitTransaction();
+        em.getTransaction().commit();
     }
 
     @POST
@@ -46,9 +50,10 @@ public class KundeController {
     @Consumes(MediaType.APPLICATION_JSON)
     public String neu(String jsonString){
         EntityKunde ek = gson.fromJson(jsonString, EntityKunde.class);
-        em = entityService.startTransaction();
+        em.getTransaction().begin();
         em.persist(ek);
-        entityService.commitTransaction();
+        em.flush();
+        em.getTransaction().commit();
         return "true";
 
     }
@@ -61,7 +66,7 @@ public class KundeController {
         List<EntityKunde> list = gson.fromJson(jsonString, mapType);
 
 
-        em = entityService.startTransaction();
+        em.getTransaction().begin();
         Query query = em.createQuery("update EntityKunde set vorname = :vorname, nachname = :nachname, postleitzahl = :plz, ort = :ort, strasse = :str, hausnummer = :hsnr, tuer = :tuer, telnummer = :tnr where kundeid = :kundennr");
         for (int i = 0; i < list.size(); i++) {
             query.setParameter("vorname", list.get(i).getVorname());
@@ -75,7 +80,7 @@ public class KundeController {
             query.setParameter("kundennr", list.get(i).getKundeid());
             query.executeUpdate();
         }
-        entityService.commitTransaction();
+        em.getTransaction().commit();
         return "true";
 
     }

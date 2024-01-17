@@ -1,19 +1,15 @@
 package com.example.myserver;
 
-import com.example.myserver.model.EntityFmgasbefund;
-import com.example.myserver.model.EntityFmmangelmldg;
 import com.example.myserver.model.EntityPruefprotokoll;
 import com.google.gson.Gson;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
+import jakarta.persistence.*;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@Path("/gasbefund")
-public class GasbefundController {
+@Path("/pruefprotokoll")
+public class PruefprotokollController {
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("default");
     EntityManager em = emf.createEntityManager();
 
@@ -22,7 +18,7 @@ public class GasbefundController {
     @Path("/neu")
     @Consumes(MediaType.APPLICATION_JSON)
     public String neu(String jsonString){
-        EntityFmgasbefund eg = gson.fromJson(jsonString, EntityFmgasbefund.class);
+        EntityPruefprotokoll eg = gson.fromJson(jsonString, EntityPruefprotokoll.class);
         em.getTransaction().begin();
         em.persist(eg);
         em.flush();
@@ -34,8 +30,8 @@ public class GasbefundController {
     @Path("/getWithId/{id}")
     public String getWithId(@PathParam("id") int id) {
         em.getTransaction().begin();
-        em.refresh(em.find(EntityFmgasbefund.class, id));
-        EntityFmgasbefund eg = em.find(EntityFmgasbefund.class, id);
+        em.refresh(em.find(EntityPruefprotokoll.class, id));
+        EntityPruefprotokoll eg = em.find(EntityPruefprotokoll.class, id);
         String json = gson.toJson(eg);
         em.getTransaction().commit();
         return json;

@@ -20,6 +20,14 @@
       <class>com.example.myserver.model.EntityFmgasbefund</class>
       <class>com.example.myserver.model.EntityFmkehrversgemeinde</class>
     <class>com.example.myserver.EntityEndbefund</class>
+      <class>com.example.myserver.model.EntityPruefprotokoll</class>
+    <class>com.example.myserver.EntityFeuverzul</class>
+    <class>com.example.myserver.EntityPruefprotokoll</class>
+    <class>com.example.myserver.EntityRauchabgasfang</class>
+    <class>com.example.myserver.model.EntityFeuverzul</class>
+    <class>com.example.myserver.model.EntityRauchabgasfang</class>
+      <class>com.example.myserver.model.EntityPruefprotokollb8201</class>
+    <class>com.example.myserver.EntityPruefprotokollb8201</class>
     <properties>
       <property name="eclipselink.jdbc.url" value="jdbc:postgresql://192.168.1.16:5432/Diplomarbeit"/>
       <property name="eclipselink.jdbc.driver" value="org.postgresql.Driver"/>
