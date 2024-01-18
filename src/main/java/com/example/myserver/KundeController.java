@@ -3,13 +3,17 @@ package com.example.myserver;
 import com.example.myserver.model.ClassKunde;
 import com.example.myserver.model.EntityEndbefund;
 import com.example.myserver.model.EntityKunde;
-import jakarta.json.bind.Jsonb;
-import jakarta.json.bind.JsonbBuilder;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
 import jakarta.persistence.Query;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 
+import java.lang.reflect.Type;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -17,37 +21,39 @@ import java.util.List;
 @Consumes(MediaType.APPLICATION_JSON)
 @Path("/kunde")
 public class KundeController {
-    private EntityService entityService = new EntityService();
-    EntityManager em;
+    EntityManagerFactory emf = Persistence.createEntityManagerFactory("default");
+    EntityManager em = emf.createEntityManager();
+    Gson gson = new Gson();
     @GET
     @Path("/getAll")
     public String getAll(){
-        em = entityService.startTransaction();
-        List<EntityEndbefund> list = em.createQuery("Select k from EntityKunde k").getResultList();
-        Jsonb jsonb = JsonbBuilder.create();
-        String listJson = jsonb.toJson(list);
-        entityService.commitTransaction();
+        em.getTransaction().begin();
+        em.clear();
+        em.flush();
+        List<EntityKunde> list = em.createQuery("Select k from EntityKunde k").getResultList();
+        String listJson = gson.toJson(list);
+        em.getTransaction().commit();
         return listJson;
     }
 
     @GET
     @Path("/loeschen/{id}")
     public void loeschen(@PathParam("id") int id) {
-        em = entityService.startTransaction();
+        em.getTransaction().begin();
         EntityKunde g = em.find(EntityKunde.class, id);
         em.remove(g);
-        entityService.commitTransaction();
+        em.getTransaction().commit();
     }
 
     @POST
     @Path("/neu")
     @Consumes(MediaType.APPLICATION_JSON)
     public String neu(String jsonString){
-        Jsonb jsonb = JsonbBuilder.create();
-        EntityKunde ek = jsonb.fromJson(jsonString, EntityKunde.class);
-        em = entityService.startTransaction();
+        EntityKunde ek = gson.fromJson(jsonString, EntityKunde.class);
+        em.getTransaction().begin();
         em.persist(ek);
-        entityService.commitTransaction();
+        em.flush();
+        em.getTransaction().commit();
         return "true";
 
     }
@@ -56,43 +62,25 @@ public class KundeController {
     @Path("/aendern")
     @Consumes(MediaType.APPLICATION_JSON)
     public String aendern(String jsonString){
-        Jsonb jsonb = JsonbBuilder.create();
-        List<EntityKunde> el = new LinkedList<>();
-        List<EntityKunde> list = (List<EntityKunde>) jsonb.fromJson(jsonString, List.class);
+        Type mapType = new TypeToken<List<EntityKunde>>() {}.getType();
+        List<EntityKunde> list = gson.fromJson(jsonString, mapType);
 
-        String[] splitString = jsonString.split("}");
-        EntityKunde ek;
-        String finishedString = "";
-        StringBuilder build;
-        for (int i = 0; i < splitString.length-1; i++) {
-            if(i == 0)finishedString = splitString[i]+"}]";
-            else {finishedString = "["+splitString[i]+"}]";
-                build = new StringBuilder(finishedString);
-                build.deleteCharAt(1);
-                finishedString = build.toString();
-            }
 
-            ek = jsonb.fromJson(finishedString, EntityKunde.class);
-
-            el.add(ek);
-
-        }
-
-        em = entityService.startTransaction();
+        em.getTransaction().begin();
         Query query = em.createQuery("update EntityKunde set vorname = :vorname, nachname = :nachname, postleitzahl = :plz, ort = :ort, strasse = :str, hausnummer = :hsnr, tuer = :tuer, telnummer = :tnr where kundeid = :kundennr");
-        for (int i = 0; i < el.size(); i++) {
-            query.setParameter("vorname", el.get(i).getVorname());
-            query.setParameter("nachname", el.get(i).getNachname());
-            query.setParameter("plz", el.get(i).getPostleitzahl());
-            query.setParameter("ort", el.get(i).getOrt());
-            query.setParameter("str", el.get(i).getStrasse());
-            query.setParameter("hsnr", el.get(i).getHausnummer());
-            query.setParameter("tuer", el.get(i).getTuer());
-            query.setParameter("tnr", el.get(i).getTelnummer());
-            query.setParameter("kundennr", el.get(i).getKundeid());
+        for (int i = 0; i < list.size(); i++) {
+            query.setParameter("vorname", list.get(i).getVorname());
+            query.setParameter("nachname", list.get(i).getNachname());
+            query.setParameter("plz", list.get(i).getPostleitzahl());
+            query.setParameter("ort", list.get(i).getOrt());
+            query.setParameter("str", list.get(i).getStrasse());
+            query.setParameter("hsnr", list.get(i).getHausnummer());
+            query.setParameter("tuer", list.get(i).getTuer());
+            query.setParameter("tnr", list.get(i).getTelnummer());
+            query.setParameter("kundennr", list.get(i).getKundeid());
             query.executeUpdate();
         }
-        entityService.commitTransaction();
+        em.getTransaction().commit();
         return "true";
 
     }

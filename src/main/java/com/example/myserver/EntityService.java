@@ -1,19 +1,27 @@
 package com.example.myserver;
 
 import jakarta.persistence.*;
-import jakarta.transaction.Transaction;
 
 public class EntityService {
 
-    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("default");
-    private EntityManager em = emf.createEntityManager();
-    private EntityTransaction et = em.getTransaction();
+    private EntityManagerFactory emf2 = Persistence.createEntityManagerFactory("default");
+    private EntityManager em2 = emf2.createEntityManager();
+    private EntityTransaction et2 = em2.getTransaction();
     public EntityManager startTransaction(){
-        et.begin();
-        return em;
+        et2.begin();
+        return em2;
     }
     public void commitTransaction(){
-        et.commit();
+        et2.commit();
+    }
+
+    public static  EntityManagerFactory emf = Persistence.createEntityManagerFactory("default");
+    public static EntityManager em = emf.createEntityManager();
+    public static EntityTransaction et = em.getTransaction();
+
+    public static void flush(){
+        em.flush();
+
     }
 
 

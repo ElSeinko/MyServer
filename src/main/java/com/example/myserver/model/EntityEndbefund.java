@@ -1,15 +1,12 @@
 package com.example.myserver.model;
 
-import jakarta.ejb.Local;
 import jakarta.persistence.*;
 
 import java.sql.Date;
-import java.time.LocalDate;
 
 @Entity
 @Table(name = "endbefund", schema = "public")
 public class EntityEndbefund {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id")
     private int id;
@@ -81,10 +78,10 @@ public class EntityEndbefund {
     private Integer afAuftellungsjahr;
     @Basic
     @Column(name = "pruefdatum")
-    private LocalDate pruefdatum;
+    private Date pruefdatum;
     @Basic
-    @Column(name = "id_auftrag")
-    private Integer idAuftrag;
+    @Column(name = "auftragid")
+    private Integer auftragid;
 
     public int getId() {
         return id;
@@ -270,20 +267,20 @@ public class EntityEndbefund {
         this.afAuftellungsjahr = afAuftellungsjahr;
     }
 
-    public LocalDate getPruefdatum() {
+    public Date getPruefdatum() {
         return pruefdatum;
     }
 
-    public void setPruefdatum(LocalDate pruefdatum) {
+    public void setPruefdatum(Date pruefdatum) {
         this.pruefdatum = pruefdatum;
     }
 
-    public Integer getIdAuftrag() {
-        return idAuftrag;
+    public Integer getAuftragid() {
+        return auftragid;
     }
 
-    public void setIdAuftrag(Integer idAuftrag) {
-        this.idAuftrag = idAuftrag;
+    public void setAuftragid(Integer auftragid) {
+        this.auftragid = auftragid;
     }
 
     @Override
@@ -325,7 +322,7 @@ public class EntityEndbefund {
         if (afAuftellungsjahr != null ? !afAuftellungsjahr.equals(that.afAuftellungsjahr) : that.afAuftellungsjahr != null)
             return false;
         if (pruefdatum != null ? !pruefdatum.equals(that.pruefdatum) : that.pruefdatum != null) return false;
-        if (idAuftrag != null ? !idAuftrag.equals(that.idAuftrag) : that.idAuftrag != null) return false;
+        if (auftragid != null ? !auftragid.equals(that.auftragid) : that.auftragid != null) return false;
 
         return true;
     }
@@ -356,7 +353,7 @@ public class EntityEndbefund {
         result = 31 * result + (afBaujahr != null ? afBaujahr.hashCode() : 0);
         result = 31 * result + (afAuftellungsjahr != null ? afAuftellungsjahr.hashCode() : 0);
         result = 31 * result + (pruefdatum != null ? pruefdatum.hashCode() : 0);
-        result = 31 * result + (idAuftrag != null ? idAuftrag.hashCode() : 0);
+        result = 31 * result + (auftragid != null ? auftragid.hashCode() : 0);
         return result;
     }
 }
