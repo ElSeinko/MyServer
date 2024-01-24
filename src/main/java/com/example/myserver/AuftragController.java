@@ -1,11 +1,12 @@
 package com.example.myserver;
 
 import com.example.myserver.model.EntityAuftrag;
-import com.example.myserver.model.EntityEndbefund;
 import com.example.myserver.model.EntityKunde;
 import com.google.gson.Gson;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 
@@ -15,26 +16,34 @@ import java.util.List;
 @Consumes(MediaType.APPLICATION_JSON)
 @Path("/auftrag")
 public class AuftragController {
-    private EntityService entityService = new EntityService();
-    EntityManager em;
+    EntityManagerFactory emf = Persistence.createEntityManagerFactory("default");
+    EntityManager em = emf.createEntityManager();
     Gson gson = new Gson();
     @GET
     @Path("/getWithId/{id}")
     public String getWithId(@PathParam("id") int id) {
-        em = entityService.startTransaction();
+        em.getTransaction().begin();
         EntityAuftrag g = em.find(EntityAuftrag.class, id);
         String json = gson.toJson(g);
-        entityService.commitTransaction();
+        em.getTransaction().commit();
         return json;
     }
 
     @GET
     @Path("/getAll")
     public String getAll(){
-        em = entityService.startTransaction();
+        em.getTransaction().begin();
+        refreshTable();
         List<EntityAuftrag> list = em.createQuery("Select k from EntityAuftrag k").getResultList();
         String listJson = gson.toJson(list);
-        entityService.commitTransaction();
+        em.getTransaction().commit();
         return listJson;
+    }
+
+    public void refreshTable(){
+        List<EntityAuftrag> list = em.createQuery("Select k from EntityAuftrag k").getResultList();
+        for (int i = 1; i < list.size()+1; i++){
+            em.refresh(em.find(EntityAuftrag.class, i));
+        }
     }
 }

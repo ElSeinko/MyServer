@@ -1,15 +1,15 @@
 package com.example.myserver;
 
-import com.example.myserver.model.EntityAuftrag;
-import com.example.myserver.model.EntityFmmangelmldg;
-import com.example.myserver.model.EntityKunde;
-import com.example.myserver.model.EntityPruefprotokoll;
+import com.example.myserver.model.*;
 import com.google.gson.Gson;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
+import jakarta.persistence.Query;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
+
+import java.util.List;
 
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
@@ -38,6 +38,18 @@ public class FmMangelmldgController {
         em.refresh(em.find(EntityFmmangelmldg.class, id));
         EntityFmmangelmldg eg = em.find(EntityFmmangelmldg.class, id);
         String json = gson.toJson(eg);
+        em.getTransaction().commit();
+        return json;
+    }
+
+    @GET
+    @Path("/getWithAuftragId/{auftragid}")
+    public String getWithAuftragId(@PathParam("auftragid") int auftragid) {
+        em.getTransaction().begin();
+        Query query = em.createQuery("select e from EntityFmmangelmldg e WHERE e.auftragid = :auftragid");
+        query.setParameter("auftragid", auftragid);
+        List<EntityFmmangelmldg> list = query.getResultList();
+        String json = gson.toJson(list.get(0));
         em.getTransaction().commit();
         return json;
     }
