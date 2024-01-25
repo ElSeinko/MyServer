@@ -1,6 +1,6 @@
 package com.example.myserver;
 
-import com.example.myserver.model.EntityEndbefund;
+import com.example.myserver.model.EntityFmendbefund;
 import com.example.myserver.model.EntityFmerhebungsblatt;
 import com.example.myserver.model.EntityKunde;
 import com.example.myserver.model.EntityPruefprotokoll;
@@ -19,8 +19,8 @@ import java.util.List;
 @Consumes(MediaType.APPLICATION_JSON)
 @Path("/erhebungsblatt")
 public class ErhebungsblattController {
-    private EntityService entityService = new EntityService();
-    EntityManager em;
+    EntityManagerFactory emf = Persistence.createEntityManagerFactory("default");
+    EntityManager em = emf.createEntityManager();
     Gson gson = new Gson();
     @GET
     @Path("/getWithId/{id}")
@@ -34,26 +34,26 @@ public class ErhebungsblattController {
         return json;
     }
 
-    @POST
-    @Path("/aendern")
-    @Consumes(MediaType.APPLICATION_JSON)
-    public String aendern(String jsonString){
-        EntityEndbefund ee = gson.fromJson(jsonString, EntityEndbefund.class);
-        em = entityService.startTransaction();
-        Query query = em.createQuery("UPDATE EntityEndbefund ee SET ee = :endbefund where ee.befundnr = :endbefundBefundnr");
-        query.setParameter("endbefund", ee).setParameter("endbefundBefundnr", ee.getBefundnr()).executeUpdate();
-        entityService.commitTransaction();
-        return "true";
-
-    }
+//    @POST
+//    @Path("/aendern")
+//    @Consumes(MediaType.APPLICATION_JSON)
+//    public String aendern(String jsonString){
+//        EntityFmerhebungsblatt ee = gson.fromJson(jsonString, EntityFmerhebungsblatt.class);
+//        em = entityService.startTransaction();
+//        Query query = em.createQuery("UPDATE EntityFmerhebungsblatt ee SET ee = :endbefund where ee.befundnr = :endbefundBefundnr");
+//        query.setParameter("endbefund", ee).setParameter("endbefundBefundnr", ee.getBefundnr()).executeUpdate();
+//        entityService.commitTransaction();
+//        return "true";
+//
+//    }
 
     @GET
     @Path("/getAll")
     public String getAll(){
-        em = entityService.startTransaction();
+        em.getTransaction().begin();
         List<EntityFmerhebungsblatt> list = em.createQuery("Select eb from EntityFmerhebungsblatt eb").getResultList();
         String listJson = gson.toJson(list);
-        entityService.commitTransaction();
+        em.getTransaction().commit();
         return listJson;
     }
 
@@ -62,12 +62,24 @@ public class ErhebungsblattController {
     @Consumes(MediaType.APPLICATION_JSON)
     public String neu(String jsonString){
         EntityFmerhebungsblatt eb = gson.fromJson(jsonString, EntityFmerhebungsblatt.class);
-        em = entityService.startTransaction();
+        em.getTransaction().begin();
         em.persist(eb);
         em.flush();
-        entityService.commitTransaction();
+        em.getTransaction().commit();
         return "true";
 
+    }
+
+    @GET
+    @Path("/getWithAuftragId/{auftragid}")
+    public String getWithAuftragId(@PathParam("auftragid") int auftragid) {
+        em.getTransaction().begin();
+        Query query = em.createQuery("select e from EntityFmerhebungsblatt e WHERE e.auftragid = :auftragid");
+        query.setParameter("auftragid", auftragid);
+        List<EntityFmerhebungsblatt> list = query.getResultList();
+        String json = gson.toJson(list.get(0));
+        em.getTransaction().commit();
+        return json;
     }
 
 }

@@ -1,8 +1,6 @@
 package com.example.myserver;
 
-import com.example.myserver.model.EntityEndbefund;
-import com.example.myserver.model.EntityFmkehrversgemeinde;
-import com.example.myserver.model.EntityPruefprotokoll;
+import com.example.myserver.model.EntityFmendbefund;
 import com.google.gson.Gson;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -26,7 +24,7 @@ public class EndbefundController {
     @Path("/neu")
     @Consumes(MediaType.APPLICATION_JSON)
     public String neu(String jsonString){
-        EntityEndbefund eg = gson.fromJson(jsonString, EntityEndbefund.class);
+        EntityFmendbefund eg = gson.fromJson(jsonString, EntityFmendbefund.class);
         em.getTransaction().begin();
         em.persist(eg);
         em.flush();
@@ -38,9 +36,21 @@ public class EndbefundController {
     @Path("/getWithId/{id}")
     public String getWithId(@PathParam("id") int id) {
         em.getTransaction().begin();
-        em.refresh(em.find(EntityEndbefund.class, id));
-        EntityEndbefund eg = em.find(EntityEndbefund.class, id);
+        em.refresh(em.find(EntityFmendbefund.class, id));
+        EntityFmendbefund eg = em.find(EntityFmendbefund.class, id);
         String json = gson.toJson(eg);
+        em.getTransaction().commit();
+        return json;
+    }
+
+    @GET
+    @Path("/getWithAuftragId/{auftragid}")
+    public String getWithAuftragId(@PathParam("auftragid") int auftragid) {
+        em.getTransaction().begin();
+        Query query = em.createQuery("select e from EntityFmendbefund e WHERE e.idAuftrag = :auftragid");
+        query.setParameter("auftragid", auftragid);
+        List<EntityFmendbefund> list = query.getResultList();
+        String json = gson.toJson(list.get(0));
         em.getTransaction().commit();
         return json;
     }
@@ -58,13 +68,13 @@ public class EndbefundController {
 //
 //    }
 //
-//    @GET
-//    @Path("/getAll")
-//    public String getAll(){
-//        em = entityService.startTransaction();
-//        List<EntityEndbefund> list = em.createQuery("Select ee from EntityEndbefund ee").getResultList();
-//        String listJson = gson.toJson(list);
-//        entityService.commitTransaction();
-//        return listJson;
-//    }
+    @GET
+    @Path("/getAll")
+    public String getAll(){
+        em.getTransaction().begin();
+        List<EntityFmendbefund> list = em.createQuery("Select ee from EntityFmendbefund ee").getResultList();
+        String listJson = gson.toJson(list);
+        em.getTransaction().commit();
+        return listJson;
+    }
 }

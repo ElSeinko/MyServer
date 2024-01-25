@@ -5,7 +5,8 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "fmmangelmldg", schema = "public")
 public class EntityFmmangelmldg {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name = "seqmaengelmeldungen", sequenceName = "seqmaengelmeldungen", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqmaengelmeldungen")
     @Id
     @Column(name = "fmmangelmldgid")
     private int fmmangelmldgid;
