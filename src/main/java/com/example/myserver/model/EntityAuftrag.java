@@ -7,7 +7,8 @@ import java.sql.Date;
 @Entity
 @Table(name = "auftrag", schema = "public")
 public class EntityAuftrag {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name = "seqauftrag", sequenceName = "seqauftrag", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqauftrag")
     @Id
     @Column(name = "auftragid")
     private int auftragid;
