@@ -1,8 +1,6 @@
 package com.example.myserver;
 
-import com.example.myserver.model.EntityAuftrag;
-import com.example.myserver.model.EntityFmendbefund;
-import com.example.myserver.model.EntityKunde;
+import com.example.myserver.model.*;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import jakarta.persistence.*;
@@ -27,9 +25,45 @@ public class AuftragController {
         EntityAuftrag eg = gson.fromJson(jsonString, EntityAuftrag.class);
         em.getTransaction().begin();
         em.persist(eg);
+        Query queryAuftrag = em.createQuery("select ea.auftragid from EntityAuftrag ea ORDER BY ea.auftragid DESC");
+        List<Integer> auftragList = queryAuftrag.getResultList();
+        int auftragId = auftragList.get(0);
+        if (eg.getFormular().equals("Endbefund")) {
+            EntityFmendbefund formular = new EntityFmendbefund();
+            formular.setIdAuftrag(auftragId);
+            em.persist(formular);
+        } else if (eg.getFormular().equals("Erhebungsblatt")) {
+            EntityFmerhebungsblatt formular = new EntityFmerhebungsblatt();
+            em.persist(formular);
+            return String.valueOf(formular.getFmerhebungsblattid());
+        } else if (eg.getFormular().equals("Maengelmeldungen")) {
+            EntityFmmangelmldg formular = new EntityFmmangelmldg();
+            em.persist(formular);
+            return String.valueOf(formular.getFmmangelmldgid());
+        } else if (eg.getFormular().equals("Gasbefund")) {
+            EntityFmgasbefund formular = new EntityFmgasbefund();
+            em.persist(formular);
+            return String.valueOf(formular.getFmgasbefundid());
+        } else if (eg.getFormular().equals("Kehrverweigerung")) {
+            EntityFmkehrversgemeinde formular = new EntityFmkehrversgemeinde();
+            em.persist(formular);
+            return String.valueOf(formular.getFmkehrversgemeindeid());
+        } else if (eg.getFormular().equals("Prüfprotokoll+B8201")) {
+            EntityPruefprotokollb8201 formular = new EntityPruefprotokollb8201();
+            em.persist(formular);
+            return String.valueOf(formular.getPruefprotokollb8201Id());
+        } else if (eg.getFormular().equals("Prüfprotokoll")) {
+            EntityPruefprotokoll formular = new EntityPruefprotokoll();
+            em.persist(formular);
+            return String.valueOf(formular.getPruefprotokollid());
+        } else if (eg.getFormular().equals("Vorbefund Mitarbeiter")) {
+            EntityFmvorbefund formular = new EntityFmvorbefund();
+            em.persist(formular);
+            return String.valueOf(formular.getFmvorbefundid());
+        }
         em.flush();
         em.getTransaction().commit();
-        return "true";
+        return String.valueOf(auftragId);
     }
 
     @GET

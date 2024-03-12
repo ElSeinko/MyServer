@@ -7,7 +7,8 @@ import java.sql.Date;
 @Entity
 @Table(name = "fmendbefund", schema = "public")
 public class EntityFmendbefund {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name = "seqendbefund", sequenceName = "seqendbefund", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqendbefund")
     @Id
     @Column(name = "id")
     private int id;
