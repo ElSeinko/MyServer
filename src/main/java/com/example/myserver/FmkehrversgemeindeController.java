@@ -1,5 +1,6 @@
 package com.example.myserver;
 
+import com.example.myserver.model.EntityFmendbefund;
 import com.example.myserver.model.EntityFmerhebungsblatt;
 import com.example.myserver.model.EntityFmkehrversgemeinde;
 import com.example.myserver.model.EntityPruefprotokoll;
@@ -10,6 +11,7 @@ import jakarta.persistence.Persistence;
 import jakarta.persistence.Query;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
+import org.eclipse.persistence.jpa.config.Entity;
 
 import java.util.List;
 
@@ -53,5 +55,33 @@ public class FmkehrversgemeindeController {
         String json = gson.toJson(list.get(0));
         em.getTransaction().commit();
         return json;
+    }
+
+    @POST
+    @Path("/update")
+    public String update(String jsonString){
+        EntityFmkehrversgemeinde formular = gson.fromJson(jsonString, EntityFmkehrversgemeinde.class);
+        em.getTransaction().begin();
+
+        Query query = em.createQuery("UPDATE EntityFmkehrversgemeinde " +
+                "SET auftragid = :auftragid, gemeindeamt = :gemeindeamt, bauabteilung = :bauabteilung, " +
+                "datum = :datum, objekt = :objekt, benutzung = :benutzung, letzekehrung = :letzekehrung " +
+                "WHERE fmkehrversgemeindeid = :fmkehrversgemeindeid");
+
+        // Setting parameters for the query
+        query.setParameter("auftragid", formular.getAuftragid());
+        query.setParameter("gemeindeamt", formular.getGemeindeamt());
+        query.setParameter("bauabteilung", formular.getBauabteilung());
+        query.setParameter("datum", formular.getDatum());
+        query.setParameter("objekt", formular.getObjekt());
+        query.setParameter("benutzung", formular.getBenutzung());
+        query.setParameter("letzekehrung", formular.getLetzekehrung());
+        query.setParameter("fmkehrversgemeindeid", formular.getFmkehrversgemeindeid());
+
+
+        query.executeUpdate();
+        em.getTransaction().commit();
+
+        return "true";
     }
 }

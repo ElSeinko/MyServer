@@ -54,4 +54,37 @@ public class FmMangelmldgController {
         return json;
     }
 
+    @POST
+    @Path("/update")
+    public String update(String jsonString){
+        EntityFmmangelmldg formular = gson.fromJson(jsonString, EntityFmmangelmldg.class);
+        em.getTransaction().begin();
+
+        Query query = em.createQuery("UPDATE EntityFmmangelmldg " +
+                "SET auftragid = :auftragid, gemeindeamt = :gemeindeamt, rauchfangkehrer = :rauchfangkehrer, " +
+                "telefon = :telefon, objekt = :objekt, mangel1 = :mangel1, mangel2 = :mangel2, " +
+                "mangel3 = :mangel3, mangel4 = :mangel4, mangel5 = :mangel5, mangel6 = :mangel6, " +
+                "mangel7 = :mangel7 WHERE fmmangelmldgid = :fmmangelmldgid");
+
+        // Setting parameters for the query
+        query.setParameter("auftragid", formular.getAuftragid());
+        query.setParameter("gemeindeamt", formular.getGemeindeamt());
+        query.setParameter("rauchfangkehrer", formular.getRauchfangkehrer());
+        query.setParameter("telefon", formular.getTelefon());
+        query.setParameter("objekt", formular.getObjekt());
+        query.setParameter("mangel1", formular.getMangel1());
+        query.setParameter("mangel2", formular.getMangel2());
+        query.setParameter("mangel3", formular.getMangel3());
+        query.setParameter("mangel4", formular.getMangel4());
+        query.setParameter("mangel5", formular.getMangel5());
+        query.setParameter("mangel6", formular.getMangel6());
+        query.setParameter("mangel7", formular.getMangel7());
+        query.setParameter("fmmangelmldgid", formular.getFmmangelmldgid());
+
+
+        query.executeUpdate();
+        em.getTransaction().commit();
+
+        return "true";
+    }
 }

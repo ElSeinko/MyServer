@@ -56,4 +56,49 @@ public class GasbefundController {
         em.getTransaction().commit();
         return json;
     }
+
+
+    @POST
+    @Path("/update")
+    public String update(String jsonString){
+        EntityFmgasbefund formular = gson.fromJson(jsonString, EntityFmgasbefund.class);
+        em.getTransaction().begin();
+        Query query = em.createQuery("UPDATE EntityFmgasbefund " +
+                "SET auftragid = :auftragid, befundnr = :befundnr,  objekt = :objekt, eigentuemer = :eigentuemer, " +
+                "benutzer = :benutzer, installateur = :installateur, gasfangbaustoff = :gasfangbaustoff, " +
+                "querschnitt = :querschnitt, hoefanges = :hoefanges, wirksfanghoehe = :wirksfanghoehe, " +
+                "angeschlossenefeuerstaettetyp = :angeschlossenefeuerstaettetyp, leistung = :leistung, " +
+                "baujahr = :baujahr, zuabluftfuehrung = :zuabluftfuehrung, " +
+                "aufstellungsgeschoss = :aufstellungsgeschoss, verbindungsstueckdurchmesser = :verbindungsstueckdurchmesser, " +
+                "waagrechtelaenge = :waagrechtelaenge, geschossfangsohle = :geschossfangsohle " +
+                "WHERE fmgasbefundid = :fmgasbefundid");
+
+        // Setting parameters for the query
+        query.setParameter("auftragid", formular.getAuftragid());
+        query.setParameter("befundnr", formular.getBefundnr());
+        query.setParameter("objekt", formular.getObjekt());
+        query.setParameter("eigentuemer", formular.getEigentuemer());
+        query.setParameter("benutzer", formular.getBenutzer());
+        query.setParameter("installateur", formular.getInstallateur());
+        query.setParameter("gasfangbaustoff", formular.getGasfangbaustoff());
+        query.setParameter("querschnitt", formular.getQuerschnitt());
+        query.setParameter("hoefanges", formular.getHoefanges());
+        query.setParameter("wirksfanghoehe", formular.getWirksfanghoehe());
+        query.setParameter("angeschlossenefeuerstaettetyp", formular.getAngeschlossenefeuerstaettetyp());
+        query.setParameter("leistung", formular.getLeistung());
+        query.setParameter("baujahr", formular.getBaujahr());
+        query.setParameter("zuabluftfuehrung", formular.getZuabluftfuehrung());
+        query.setParameter("aufstellungsgeschoss", formular.getAufstellungsgeschoss());
+        query.setParameter("verbindungsstueckdurchmesser", formular.getVerbindungsstueckdurchmesser());
+        query.setParameter("waagrechtelaenge", formular.getWaagrechtelaenge());
+        query.setParameter("geschossfangsohle", formular.getGeschossfangsohle());
+        query.setParameter("fmgasbefundid", formular.getFmgasbefundid());
+
+
+
+        query.executeUpdate();
+        em.getTransaction().commit();
+
+        return "true";
+    }
 }

@@ -85,9 +85,9 @@ public class KundeController {
     }
 
     public void refreshTable(){
-        List<EntityAuftrag> list = em.createQuery("Select k from EntityAuftrag k").getResultList();
-        for (int i = 1; i < list.size()+1; i++){
-            em.refresh(em.find(EntityAuftrag.class, i));
+        List<EntityKunde> list = em.createQuery("Select k from EntityKunde k").getResultList();
+        for (int i = 0; i < list.size()-1; i++){
+            em.refresh(em.find(EntityKunde.class, list.get(i).getKundeid()));
         }
     }
 }

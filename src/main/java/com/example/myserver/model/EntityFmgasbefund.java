@@ -5,12 +5,17 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "fmgasbefund", schema = "public")
 public class EntityFmgasbefund {
+    @SequenceGenerator(name = "seqgasbefund", sequenceName = "seqgasbefund", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqgasbefund")
     @Id
     @Column(name = "fmgasbefundid")
     private int fmgasbefundid;
     @Basic
     @Column(name = "auftragid")
     private Integer auftragid;
+    @Basic
+    @Column(name= "befundnr")
+    private Integer befundnr;
     @Basic
     @Column(name = "objekt")
     private String objekt;
@@ -74,6 +79,14 @@ public class EntityFmgasbefund {
 
     public void setAuftragid(Integer auftragid) {
         this.auftragid = auftragid;
+    }
+
+    public Integer getBefundnr() {
+        return befundnr;
+    }
+
+    public void setBefundnr(Integer befundnr) {
+        this.befundnr = befundnr;
     }
 
     public String getObjekt() {

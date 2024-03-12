@@ -13,16 +13,16 @@
     <class>com.example.myserver.model.EntityKunde</class>
     <class>com.example.myserver.model.EntityMiausammlung</class>
     <class>com.example.myserver.model.EntityMitarbeiter</class>
-      <class>com.example.myserver.model.EntityEndbefund</class>
+    <class>com.example.myserver.model.EntityFmendbefund</class>
       <class>com.example.myserver.model.EntityFmmangelmldg</class>
       <class>com.example.myserver.model.EntityFmgasbefund</class>
       <class>com.example.myserver.model.EntityFmkehrversgemeinde</class>
       <class>com.example.myserver.model.EntityPruefprotokoll</class>
       <class>com.example.myserver.model.EntityPruefprotokollb8201</class>
-    <class>com.example.myserver.EntityMitarbeiter</class>
-      <class>com.example.myserver.model.EntityFmendbefund</class>
+
+
       <properties>
-      <property name="eclipselink.jdbc.url" value="jdbc:postgresql://localhost:5432/Diplomarbeit"/>
+      <property name="eclipselink.jdbc.url" value="jdbc:postgresql://localhost:5432/postgres"/>
       <property name="eclipselink.jdbc.driver" value="org.postgresql.Driver"/>
       <property name="eclipselink.jdbc.user" value="postgres"/>
       <property name="eclipselink.jdbc.password" value="OnkelHarry"/>

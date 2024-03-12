@@ -191,6 +191,7 @@ public class ErhebungsblattController {
                 + "e.putztuerchen2 = :putztuerchen2, "
                 + "e.putztuerchen3 = :putztuerchen3 "
                 + "WHERE e.fmerhebungsblattid = :fmerhebungsblattid");
+        query.setParameter("fmerhebungsblattid", formular.getFmerhebungsblattid());
         query.setParameter("auftragid", formular.getAuftragid());
         query.setParameter("email", formular.getEmail());
         query.setParameter("wasseraufbereitung", formular.getWasseraufbereitung());

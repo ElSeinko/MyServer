@@ -34,32 +34,32 @@ public class AuftragController {
             em.persist(formular);
         } else if (eg.getFormular().equals("Erhebungsblatt")) {
             EntityFmerhebungsblatt formular = new EntityFmerhebungsblatt();
+            formular.setAuftragid(auftragId);
             em.persist(formular);
-            return String.valueOf(formular.getFmerhebungsblattid());
         } else if (eg.getFormular().equals("Maengelmeldungen")) {
             EntityFmmangelmldg formular = new EntityFmmangelmldg();
+            formular.setAuftragid(auftragId);
             em.persist(formular);
-            return String.valueOf(formular.getFmmangelmldgid());
         } else if (eg.getFormular().equals("Gasbefund")) {
             EntityFmgasbefund formular = new EntityFmgasbefund();
+            formular.setAuftragid(auftragId);
             em.persist(formular);
-            return String.valueOf(formular.getFmgasbefundid());
         } else if (eg.getFormular().equals("Kehrverweigerung")) {
             EntityFmkehrversgemeinde formular = new EntityFmkehrversgemeinde();
+            formular.setAuftragid(auftragId);
             em.persist(formular);
-            return String.valueOf(formular.getFmkehrversgemeindeid());
         } else if (eg.getFormular().equals("Prüfprotokoll+B8201")) {
             EntityPruefprotokollb8201 formular = new EntityPruefprotokollb8201();
+            formular.setAuftragid(auftragId);
             em.persist(formular);
-            return String.valueOf(formular.getPruefprotokollb8201Id());
         } else if (eg.getFormular().equals("Prüfprotokoll")) {
             EntityPruefprotokoll formular = new EntityPruefprotokoll();
+            formular.setAuftragid(auftragId);
             em.persist(formular);
-            return String.valueOf(formular.getPruefprotokollid());
         } else if (eg.getFormular().equals("Vorbefund Mitarbeiter")) {
             EntityFmvorbefund formular = new EntityFmvorbefund();
+            formular.setAuftragid(auftragId);
             em.persist(formular);
-            return String.valueOf(formular.getFmvorbefundid());
         }
         em.flush();
         em.getTransaction().commit();
@@ -118,8 +118,8 @@ public class AuftragController {
 
     public void refreshTable(){
         List<EntityAuftrag> list = em.createQuery("Select k from EntityAuftrag k").getResultList();
-        for (int i = 1; i < list.size()+1; i++){
-            em.refresh(em.find(EntityAuftrag.class, i));
+        for (int i = 0; i < list.size()-1; i++){
+            em.refresh(em.find(EntityAuftrag.class, list.get(i).getAuftragid()));
         }
     }
 }
