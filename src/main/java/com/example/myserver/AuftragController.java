@@ -8,6 +8,7 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 
 import java.lang.reflect.Type;
+import java.util.Comparator;
 import java.util.List;
 
 @Produces(MediaType.APPLICATION_JSON)
@@ -28,6 +29,12 @@ public class AuftragController {
         Query queryAuftrag = em.createQuery("select ea.auftragid from EntityAuftrag ea ORDER BY ea.auftragid DESC");
         List<Integer> auftragList = queryAuftrag.getResultList();
         int auftragId = auftragList.get(0);
+        createFormular(eg, auftragId);
+        return String.valueOf(auftragId);
+    }
+
+    public void createFormular(EntityAuftrag eg, int auftragId){
+        em.getTransaction().begin();
         if (eg.getFormular().equals("Endbefund")) {
             EntityFmendbefund formular = new EntityFmendbefund();
             formular.setIdAuftrag(auftragId);
@@ -63,7 +70,6 @@ public class AuftragController {
         }
         em.flush();
         em.getTransaction().commit();
-        return String.valueOf(auftragId);
     }
 
     @GET
@@ -93,7 +99,15 @@ public class AuftragController {
     public String aendern(String jsonString){
         Type mapType = new TypeToken<List<EntityAuftrag>>() {}.getType();
         List<EntityAuftrag> list = gson.fromJson(jsonString, mapType);
+        list.sort(Comparator.comparing(x -> x.getAuftragid()));
+        List<EntityAuftrag> currentList = em.createQuery("select e from EntityAuftrag e ORDER BY e.auftragid asc ").getResultList();
 
+
+        for (int i = 0; i < list.size(); i++) {
+            if(!list.get(i).getFormular().equals(currentList.get(i).getFormular())){
+
+            }
+        }
 
         em.getTransaction().begin();
         Query query = em.createQuery("update EntityAuftrag set kundeid = :kundeid, formular = :formular, postleitzahl = :postleitzahl, ort = :ort, strasse = :strasse, hausnummer = :hausnummer, tuer = :tuer, telnummer = :telnummer, datum = :datum, anmerkung = :anmerkung where auftragid = :auftragid");
