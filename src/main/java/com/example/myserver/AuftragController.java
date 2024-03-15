@@ -34,7 +34,6 @@ public class AuftragController {
     }
 
     public void createFormular(EntityAuftrag eg, int auftragId){
-        em.getTransaction().begin();
         if (eg.getFormular().equals("Endbefund")) {
             EntityFmendbefund formular = new EntityFmendbefund();
             formular.setIdAuftrag(auftragId);
@@ -43,7 +42,7 @@ public class AuftragController {
             EntityFmerhebungsblatt formular = new EntityFmerhebungsblatt();
             formular.setAuftragid(auftragId);
             em.persist(formular);
-        } else if (eg.getFormular().equals("Maengelmeldungen")) {
+        } else if (eg.getFormular().equals("Mängelmeldungen")) {
             EntityFmmangelmldg formular = new EntityFmmangelmldg();
             formular.setAuftragid(auftragId);
             em.persist(formular);
@@ -94,9 +93,46 @@ public class AuftragController {
     }
 
     @POST
+    @Path("/loeschen")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String loeschen(String jsonString){
+        EntityAuftrag ea = gson.fromJson(jsonString, EntityAuftrag.class);
+        em.getTransaction().begin();
+        Query query = null;
+        if (ea.getFormular().equals("Endbefund")) {
+            query = em.createQuery("Delete from EntityFmendbefund where idAuftrag = :auftragid");
+        } else if (ea.getFormular().equals("Erhebungsblatt")) {
+            query = em.createQuery("Delete from EntityFmerhebungsblatt where auftragid = :auftragid");
+        } else if (ea.getFormular().equals("Mängelmeldungen")) {
+            query = em.createQuery("Delete from EntityFmmangelmldg where auftragid = :auftragid");
+        } else if (ea.getFormular().equals("Gasbefund")) {
+            query = em.createQuery("Delete from EntityFmgasbefund where auftragid = :auftragid");
+        } else if (ea.getFormular().equals("Kehrverweigerung")) {
+            query = em.createQuery("Delete from EntityFmkehrversgemeinde where auftragid = :auftragid");
+        } else if (ea.getFormular().equals("Prüfprotokoll+B8201")) {
+            query = em.createQuery("Delete from EntityPruefprotokollb8201 where auftragid = :auftragid");
+        } else if (ea.getFormular().equals("Prüfprotokoll")) {
+            query = em.createQuery("Delete from EntityPruefprotokoll where auftragid = :auftragid");
+        } else if (ea.getFormular().equals("Vorbefund Mitarbeiter")) {
+            query = em.createQuery("Delete from EntityFmvorbefund where auftragid = :auftragid");
+        }
+        query.setParameter("auftragid", ea.getAuftragid());
+        query.executeUpdate();
+        query = em.createQuery("delete from EntityAuftrag  where auftragid = :auftragid");
+        query.setParameter("auftragid", ea.getAuftragid());
+        query.executeUpdate();
+        em.getTransaction().commit();
+        return "true";
+
+    }
+
+
+
+    @POST
     @Path("/aendern")
     @Consumes(MediaType.APPLICATION_JSON)
     public String aendern(String jsonString){
+        em.getTransaction().begin();
         Type mapType = new TypeToken<List<EntityAuftrag>>() {}.getType();
         List<EntityAuftrag> list = gson.fromJson(jsonString, mapType);
         list.sort(Comparator.comparing(x -> x.getAuftragid()));
@@ -109,7 +145,6 @@ public class AuftragController {
             }
         }
 
-        em.getTransaction().begin();
         Query query = em.createQuery("update EntityAuftrag set kundeid = :kundeid, formular = :formular, postleitzahl = :postleitzahl, ort = :ort, strasse = :strasse, hausnummer = :hausnummer, tuer = :tuer, telnummer = :telnummer, datum = :datum, anmerkung = :anmerkung where auftragid = :auftragid");
         for (int i = 0; i < list.size(); i++) {
             query.setParameter("auftragid", list.get(i).getAuftragid());

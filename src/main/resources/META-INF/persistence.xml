@@ -7,7 +7,6 @@
   <persistence-unit name="default">
 
     <class>com.example.myserver.model.EntityAuftrag</class>
-    <class>com.example.myserver.model.EntityFmb8201</class>
     <class>com.example.myserver.model.EntityFmerhebungsblatt</class>
     <class>com.example.myserver.model.EntityFmvorbefund</class>
     <class>com.example.myserver.model.EntityKunde</class>
@@ -22,7 +21,7 @@
 
 
       <properties>
-      <property name="eclipselink.jdbc.url" value="jdbc:postgresql://localhost:5432/postgres"/>
+      <property name="eclipselink.jdbc.url" value="jdbc:postgresql://localhost:5432/Diplomarbeit"/>
       <property name="eclipselink.jdbc.driver" value="org.postgresql.Driver"/>
       <property name="eclipselink.jdbc.user" value="postgres"/>
       <property name="eclipselink.jdbc.password" value="OnkelHarry"/>
