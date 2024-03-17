@@ -31,7 +31,7 @@ public class EntityKunde {
     private Integer tuer;
     @Basic
     @Column(name = "telnummer")
-    private Integer telnummer;
+    private Long telnummer;
 
     public int getKundeid() {
         return kundeid;
@@ -97,11 +97,11 @@ public class EntityKunde {
         this.tuer = tuer;
     }
 
-    public Integer getTelnummer() {
+    public Long getTelnummer() {
         return telnummer;
     }
 
-    public void setTelnummer(Integer telnummer) {
+    public void setTelnummer(Long telnummer) {
         this.telnummer = telnummer;
     }
 
