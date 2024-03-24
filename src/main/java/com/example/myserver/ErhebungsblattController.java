@@ -189,7 +189,8 @@ public class ErhebungsblattController {
                 + "e.benuetzung3 = :benuetzung3, "
                 + "e.putztuerchen1 = :putztuerchen1, "
                 + "e.putztuerchen2 = :putztuerchen2, "
-                + "e.putztuerchen3 = :putztuerchen3 "
+                + "e.putztuerchen3 = :putztuerchen3, "
+                + "e.imgsignature = :signature "
                 + "WHERE e.fmerhebungsblattid = :fmerhebungsblattid");
         query.setParameter("fmerhebungsblattid", formular.getFmerhebungsblattid());
         query.setParameter("auftragid", formular.getAuftragid());
@@ -294,6 +295,7 @@ public class ErhebungsblattController {
         query.setParameter("putztuerchen1", formular.getPutztuerchen1());
         query.setParameter("putztuerchen2", formular.getPutztuerchen2());
         query.setParameter("putztuerchen3", formular.getPutztuerchen3());
+        query.setParameter("signature", formular.getImgsignature());
 
         query.executeUpdate();
 

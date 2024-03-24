@@ -65,6 +65,18 @@ public class EntityFmgasbefund {
     @Column(name = "geschossfangsohle")
     private Integer geschossfangsohle;
 
+    @Basic
+    @Column(name = "imgsignature")
+    private byte[] imgsignature;
+
+    public byte[] getImgsignature() {
+        return imgsignature;
+    }
+
+    public void setImgsignature(byte[] imgsignature) {
+        this.imgsignature = imgsignature;
+    }
+
     public int getFmgasbefundid() {
         return fmgasbefundid;
     }

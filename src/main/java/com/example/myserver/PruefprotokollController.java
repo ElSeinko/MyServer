@@ -101,7 +101,8 @@ public class PruefprotokollController {
                 "co2 = :co2, " +
                 "comg = :comg, " +
                 "eta = :eta, " +
-                "maengelbeheben = :maengelbeheben " +
+                "maengelbeheben = :maengelbeheben, " +
+                "imgsignature = :signature " +
                 "WHERE pruefprotokollid = :pruefprotokollid");
 
         query.setParameter("objekt1", formular.getObjekt1());
@@ -147,6 +148,7 @@ public class PruefprotokollController {
         query.setParameter("comg", formular.getComg());
         query.setParameter("eta", formular.getEta());
         query.setParameter("maengelbeheben", formular.getMaengelbeheben());
+        query.setParameter("signature", formular.getImgsignature());
         query.setParameter("pruefprotokollid", formular.getPruefprotokollid());
 
         query.executeUpdate();

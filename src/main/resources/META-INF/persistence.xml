@@ -18,9 +18,10 @@
       <class>com.example.myserver.model.EntityFmkehrversgemeinde</class>
       <class>com.example.myserver.model.EntityPruefprotokoll</class>
       <class>com.example.myserver.model.EntityPruefprotokollb8201</class>
+    <class>com.example.myserver.model.FmendbefundEntity</class>
 
 
-      <properties>
+    <properties>
       <property name="eclipselink.jdbc.url" value="jdbc:postgresql://localhost:5432/postgres"/>
       <property name="eclipselink.jdbc.driver" value="org.postgresql.Driver"/>
       <property name="eclipselink.jdbc.user" value="postgres"/>

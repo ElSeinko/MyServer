@@ -70,7 +70,7 @@ public class FmvorbefundController {
                 "hoeheanschlussstelle = :hoeheanschlussstelle, angeschlossenefeu = :angeschlossenefeu, " +
                 "verlegtesver = :verlegtesver, reinigungsoeffnungerf = :reinigungsoeffnungerf, " +
                 "artderfeu = :artderfeu, anf1 = :anf1, anf2 = :anf2, anf3 = :anf3, " +
-                "anf4 = :anf4, hoeheanschlussstellebool = :hoeheanschlussstellebool " +
+                "anf4 = :anf4, hoeheanschlussstellebool = :hoeheanschlussstellebool, imgsignature = :signature " +
                 "WHERE fmvorbefundid = :fmvorbefundid");
 
         // Setting parameters for the query
@@ -93,6 +93,7 @@ public class FmvorbefundController {
         query.setParameter("anf3", formular.getAnf3());
         query.setParameter("anf4", formular.getAnf4());
         query.setParameter("hoeheanschlussstellebool", formular.getHoeheanschlussstellebool());
+        query.setParameter("signature", formular.getImgsignature());
         query.setParameter("fmvorbefundid", formular.getFmvorbefundid());
 
 

@@ -144,6 +144,17 @@ public class EntityPruefprotokoll {
     @Basic
     @Column(name = "maengelbeheben")
     private Integer maengelbeheben;
+    @Basic
+    @Column(name = "imgsignature")
+    private byte[] imgsignature;
+
+    public byte[] getImgsignature() {
+        return imgsignature;
+    }
+
+    public void setImgsignature(byte[] imgsignature) {
+        this.imgsignature = imgsignature;
+    }
 
     public int getPruefprotokollid() {
         return pruefprotokollid;

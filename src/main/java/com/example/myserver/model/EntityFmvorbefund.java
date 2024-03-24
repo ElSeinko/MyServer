@@ -67,6 +67,17 @@ public class EntityFmvorbefund {
     @Basic
     @Column(name = "hoeheanschlussstellebool")
     private Boolean hoeheanschlussstellebool;
+    @Basic
+    @Column(name = "imgsignature")
+    private byte[] imgsignature;
+
+    public byte[] getImgsignature() {
+        return imgsignature;
+    }
+
+    public void setImgsignature(byte[] imgsignature) {
+        this.imgsignature = imgsignature;
+    }
 
     public int getFmvorbefundid() {
         return fmvorbefundid;

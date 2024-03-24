@@ -82,7 +82,7 @@ public class PruefprotokollB8201Controller {
                 "fvzzunr4 = :fvzzunr4, fvzmaengel4 = :fvzmaengel4, pruefer = :pruefer, " +
                 "pruefdatum = :pruefdatum, tlc = :tlc, tac = :tac, rz = :rz, co2 = :co2, " +
                 "comg = :comg, eta = :eta, ispos1 = :ispos1, ispos2 = :ispos2, ispos3 = :ispos3, " +
-                "ispos4 = :ispos4 WHERE pruefprotokollb8201Id = :pruefprotokollb8201Id");
+                "ispos4 = :ispos4, imgsignature = :signature WHERE pruefprotokollb8201Id = :pruefprotokollb8201Id");
 
         // Setting parameters for the query
         query.setParameter("pruefprotokollb8201Id", formular.getPruefprotokollb8201Id());
@@ -155,6 +155,7 @@ public class PruefprotokollB8201Controller {
         query.setParameter("ispos2", formular.getIspos2());
         query.setParameter("ispos3", formular.getIspos3());
         query.setParameter("ispos4", formular.getIspos4());
+        query.setParameter("signature", formular.getImgsignature());
 
 
 

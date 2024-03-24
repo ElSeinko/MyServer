@@ -70,7 +70,7 @@ public class GasbefundController {
                 "angeschlossenefeuerstaettetyp = :angeschlossenefeuerstaettetyp, leistung = :leistung, " +
                 "baujahr = :baujahr, zuabluftfuehrung = :zuabluftfuehrung, " +
                 "aufstellungsgeschoss = :aufstellungsgeschoss, verbindungsstueckdurchmesser = :verbindungsstueckdurchmesser, " +
-                "waagrechtelaenge = :waagrechtelaenge, geschossfangsohle = :geschossfangsohle " +
+                "waagrechtelaenge = :waagrechtelaenge, geschossfangsohle = :geschossfangsohle, imgsignature = :signature "  +
                 "WHERE fmgasbefundid = :fmgasbefundid");
 
         // Setting parameters for the query
@@ -92,6 +92,7 @@ public class GasbefundController {
         query.setParameter("verbindungsstueckdurchmesser", formular.getVerbindungsstueckdurchmesser());
         query.setParameter("waagrechtelaenge", formular.getWaagrechtelaenge());
         query.setParameter("geschossfangsohle", formular.getGeschossfangsohle());
+        query.setParameter("signature", formular.getImgsignature());
         query.setParameter("fmgasbefundid", formular.getFmgasbefundid());
 
 

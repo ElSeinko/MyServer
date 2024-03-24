@@ -219,6 +219,17 @@ public class EntityPruefprotokollb8201 {
     @Basic
     @Column(name = "ispos4")
     private Boolean ispos4;
+    @Basic
+    @Column(name = "imgsignature")
+    private byte[] imgsignature;
+
+    public byte[] getImgsignature() {
+        return imgsignature;
+    }
+
+    public void setImgsignature(byte[] imgsignature) {
+        this.imgsignature = imgsignature;
+    }
 
     public int getPruefprotokollb8201Id() {
         return pruefprotokollb8201Id;

@@ -105,7 +105,8 @@ public class EndbefundController {
                 "afBaujahr = :afBaujahr, " +
                 "afAuftellungsjahr = :afAuftellungsjahr, " +
                 "pruefdatum = :pruefdatum, " +
-                "idAuftrag = :idAuftrag " +
+                "idAuftrag = :idAuftrag, " +
+                "imgsignature = :signature " +
                 "WHERE id = :id");
         query.setParameter("id", formular.getId());
         query.setParameter("bauausfuehrender", formular.getBauausfuehrender());
@@ -131,6 +132,7 @@ public class EndbefundController {
         query.setParameter("afBaujahr", formular.getAfBaujahr());
         query.setParameter("afAuftellungsjahr", formular.getAfAuftellungsjahr());
         query.setParameter("pruefdatum", formular.getPruefdatum());
+        query.setParameter("signature", formular.getImgsignature());
         query.setParameter("idAuftrag", formular.getIdAuftrag());
 
 

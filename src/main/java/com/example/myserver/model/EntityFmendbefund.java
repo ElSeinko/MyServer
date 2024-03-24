@@ -85,6 +85,10 @@ public class EntityFmendbefund {
     @Column(name = "id_auftrag")
     private Integer idAuftrag;
 
+    @Basic
+    @Column(name = "imgsignature")
+    private byte[] imgsignature;
+
     public int getId() {
         return id;
     }
@@ -283,6 +287,14 @@ public class EntityFmendbefund {
 
     public void setIdAuftrag(Integer idAuftrag) {
         this.idAuftrag = idAuftrag;
+    }
+
+    public byte[] getImgsignature() {
+        return imgsignature;
+    }
+
+    public void setImgsignature(byte[] imgsignature) {
+        this.imgsignature = imgsignature;
     }
 
     @Override
