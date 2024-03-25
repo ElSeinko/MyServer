@@ -95,6 +95,7 @@ public class AuftragController {
         } else if (eg.getFormular().equals("Maengelmeldungen")) {
             EntityFmmangelmldg formular = gson.fromJson(jsonStringSplit[1], EntityFmmangelmldg.class);
             formular.setAuftragid(auftragId);
+            formular.setFmmangelmldgid(0);
             em.persist(formular);
         } else if (eg.getFormular().equals("Gasbefund")) {
             EntityFmgasbefund formular = gson.fromJson(jsonStringSplit[1], EntityFmgasbefund.class);
