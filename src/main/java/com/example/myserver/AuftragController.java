@@ -71,6 +71,55 @@ public class AuftragController {
         em.getTransaction().commit();
     }
 
+    @POST
+    @Path("/neuFromAndroid")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String neuFromAndroid(String jsonString){
+        String[] jsonStringSplit = jsonString.split(";");
+        em.getTransaction().begin();
+        EntityAuftrag eg = gson.fromJson(jsonStringSplit[0], EntityAuftrag.class);
+        em.persist(eg);
+        Query queryAuftrag = em.createQuery("select ea.auftragid from EntityAuftrag ea ORDER BY ea.auftragid DESC");
+        List<Integer> auftragList = queryAuftrag.getResultList();
+        int auftragId = auftragList.get(0);
+        if (eg.getFormular().equals("Endbefund")) {
+            EntityFmendbefund formular = gson.fromJson(jsonStringSplit[1], EntityFmendbefund.class);
+            formular.setIdAuftrag(auftragId);
+            em.persist(formular);
+        } else if (eg.getFormular().equals("Erhebungsblatt")) {
+            EntityFmerhebungsblatt formular = gson.fromJson(jsonStringSplit[1], EntityFmerhebungsblatt.class);
+            formular.setAuftragid(auftragId);
+            em.persist(formular);
+        } else if (eg.getFormular().equals("Mängelmeldungen")) {
+            EntityFmmangelmldg formular = gson.fromJson(jsonStringSplit[1], EntityFmmangelmldg.class);
+            formular.setAuftragid(auftragId);
+            em.persist(formular);
+        } else if (eg.getFormular().equals("Gasbefund")) {
+            EntityFmgasbefund formular = gson.fromJson(jsonStringSplit[1], EntityFmgasbefund.class);
+            formular.setAuftragid(auftragId);
+            em.persist(formular);
+        } else if (eg.getFormular().equals("Kehrverweigerung")) {
+            EntityFmkehrversgemeinde formular = gson.fromJson(jsonStringSplit[1], EntityFmkehrversgemeinde.class);
+            formular.setAuftragid(auftragId);
+            em.persist(formular);
+        } else if (eg.getFormular().equals("Prüfprotokoll+B8201")) {
+            EntityPruefprotokollb8201 formular = gson.fromJson(jsonStringSplit[1], EntityPruefprotokollb8201.class);
+            formular.setAuftragid(auftragId);
+            em.persist(formular);
+        } else if (eg.getFormular().equals("Prüfprotokoll")) {
+            EntityPruefprotokoll formular = gson.fromJson(jsonStringSplit[1], EntityPruefprotokoll.class);
+            formular.setAuftragid(auftragId);
+            em.persist(formular);
+        } else if (eg.getFormular().equals("Vorbefund Mitarbeiter")) {
+            EntityFmvorbefund formular = gson.fromJson(jsonStringSplit[1], EntityFmvorbefund.class);
+            formular.setAuftragid(auftragId);
+            em.persist(formular);
+        }
+        em.flush();
+        em.getTransaction().commit();
+        return String.valueOf(auftragId);
+    }
+
     @GET
     @Path("/getWithId/{id}")
     public String getWithId(@PathParam("id") int id) {
