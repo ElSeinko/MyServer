@@ -42,7 +42,7 @@ public class AuftragController {
             EntityFmerhebungsblatt formular = new EntityFmerhebungsblatt();
             formular.setAuftragid(auftragId);
             em.persist(formular);
-        } else if (eg.getFormular().equals("Mängelmeldungen")) {
+        } else if (eg.getFormular().equals("Maengelmeldungen")) {
             EntityFmmangelmldg formular = new EntityFmmangelmldg();
             formular.setAuftragid(auftragId);
             em.persist(formular);
@@ -90,7 +90,7 @@ public class AuftragController {
             EntityFmerhebungsblatt formular = gson.fromJson(jsonStringSplit[1], EntityFmerhebungsblatt.class);
             formular.setAuftragid(auftragId);
             em.persist(formular);
-        } else if (eg.getFormular().equals("Mängelmeldungen")) {
+        } else if (eg.getFormular().equals("Maengelmeldungen")) {
             EntityFmmangelmldg formular = gson.fromJson(jsonStringSplit[1], EntityFmmangelmldg.class);
             formular.setAuftragid(auftragId);
             em.persist(formular);
@@ -152,7 +152,7 @@ public class AuftragController {
             query = em.createQuery("Delete from EntityFmendbefund where idAuftrag = :auftragid");
         } else if (ea.getFormular().equals("Erhebungsblatt")) {
             query = em.createQuery("Delete from EntityFmerhebungsblatt where auftragid = :auftragid");
-        } else if (ea.getFormular().equals("Mängelmeldungen")) {
+        } else if (ea.getFormular().equals("Maengelmeldungen")) {
             query = em.createQuery("Delete from EntityFmmangelmldg where auftragid = :auftragid");
         } else if (ea.getFormular().equals("Gasbefund")) {
             query = em.createQuery("Delete from EntityFmgasbefund where auftragid = :auftragid");
