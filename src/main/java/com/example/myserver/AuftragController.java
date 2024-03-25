@@ -24,6 +24,7 @@ public class AuftragController {
     @Consumes(MediaType.APPLICATION_JSON)
     public String neu(String jsonString){
         EntityAuftrag eg = gson.fromJson(jsonString, EntityAuftrag.class);
+        eg.setAuftragid(0);
         em.getTransaction().begin();
         em.persist(eg);
         Query queryAuftrag = em.createQuery("select ea.auftragid from EntityAuftrag ea ORDER BY ea.auftragid DESC");
@@ -78,6 +79,7 @@ public class AuftragController {
         String[] jsonStringSplit = jsonString.split(";");
         em.getTransaction().begin();
         EntityAuftrag eg = gson.fromJson(jsonStringSplit[0], EntityAuftrag.class);
+        eg.setAuftragid(0);
         em.persist(eg);
         Query queryAuftrag = em.createQuery("select ea.auftragid from EntityAuftrag ea ORDER BY ea.auftragid DESC");
         List<Integer> auftragList = queryAuftrag.getResultList();
