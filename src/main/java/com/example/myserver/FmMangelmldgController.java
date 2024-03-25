@@ -24,6 +24,7 @@ public class FmMangelmldgController {
     @Consumes(MediaType.APPLICATION_JSON)
     public String neu(String jsonString){
         EntityFmmangelmldg eg = gson.fromJson(jsonString, EntityFmmangelmldg.class);
+        eg.setFmmangelmldgid(0);
         em.getTransaction().begin();
         em.persist(eg);
         em.flush();
