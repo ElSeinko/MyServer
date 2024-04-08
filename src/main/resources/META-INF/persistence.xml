@@ -23,7 +23,7 @@
       <property name="eclipselink.jdbc.url" value="jdbc:postgresql://localhost:5432/postgres"/>
       <property name="eclipselink.jdbc.driver" value="org.postgresql.Driver"/>
       <property name="eclipselink.jdbc.user" value="postgres"/>
-      <property name="eclipselink.jdbc.password" value="OnkelHarry"/>
+      <property name="eclipselink.jdbc.password" value="pgadmin"/>
     </properties>
   </persistence-unit>
 </persistence>

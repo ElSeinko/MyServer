@@ -318,11 +318,58 @@ public class EntityFmerhebungsblatt {
     private String putztuerchen3;
 
     @Basic
+    @Column(name = "eigentuemer")
+    private String eigentuemer;
+
+    @Basic
+    @Column(name = "installateur")
+    private String installateur;
+
+    @Basic
+    @Column(name = "baumeister")
+    private String baumeister;
+    @Basic
+    @Column(name = "ueberpruefungsorgan")
+    private String ueberpruefungsorgan;
+
+    @Basic
     @Column(name = "imgsignature")
     private byte[] imgsignature;
 
     public byte[] getImgsignature() {
         return imgsignature;
+    }
+
+    public String getUeberpruefungsorgan() {
+        return ueberpruefungsorgan;
+    }
+
+    public void setUeberpruefungsorgan(String ueberpruefungsorgan) {
+        this.ueberpruefungsorgan = ueberpruefungsorgan;
+    }
+
+    public String getEigentuemer() {
+        return eigentuemer;
+    }
+
+    public void setEigentuemer(String eigentuemer) {
+        this.eigentuemer = eigentuemer;
+    }
+
+    public String getInstallateur() {
+        return installateur;
+    }
+
+    public void setInstallateur(String installateur) {
+        this.installateur = installateur;
+    }
+
+    public String getBaumeister() {
+        return baumeister;
+    }
+
+    public void setBaumeister(String baumeister) {
+        this.baumeister = baumeister;
     }
 
     public void setImgsignature(byte[] imgsignature) {

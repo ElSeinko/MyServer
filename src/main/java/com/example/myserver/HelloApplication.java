@@ -10,5 +10,7 @@ public class HelloApplication extends Application {
     public String Test(){
         return "HELLO";
     }
+    public static void main(String[] args) {
+    }
 
 }

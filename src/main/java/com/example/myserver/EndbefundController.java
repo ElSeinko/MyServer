@@ -141,4 +141,74 @@ public class EndbefundController {
 
         return "true";
     }
+
+    @POST
+    @Path("/updateNoImage")
+    public String updateNoImage(String jsonString){
+        EntityFmendbefund formular = gson.fromJson(jsonString, EntityFmendbefund.class);
+        em.getTransaction().begin();
+
+        Query query = em.createQuery("Update EntityAuftrag SET kundeid = :kundeid WHERE auftragid = :auftragid");
+        query.setParameter("kundeid", formular.getIdKunde());
+        query.setParameter("auftragid", formular.getIdAuftrag());
+        query.executeUpdate();
+
+        query = em.createQuery("UPDATE EntityFmendbefund " +
+                "SET bauausfuehrender = :bauausfuehrender, " +
+                "bauwerber = :bauwerber, " +
+                "befundnr = :befundnr, " +
+                "imObjekt = :imObjekt, " +
+                "idKunde = :idKunde, " +
+                "roaDurchmesserLichteWeite = :roaDurchmesserLichteWeite, " +
+                "roaMaterial = :roaMaterial, " +
+                "roaLaenge = :roaLaenge, " +
+                "roaSohlengeschoss = :roaSohlengeschoss, " +
+                "roaZugaenglichkeit = :roaZugaenglichkeit, " +
+                "vsDurchmesserLichteWeite = :vsDurchmesserLichteWeite, " +
+                "vsMaterial = :vsMaterial, " +
+                "vsWaaglaenge = :vsWaaglaenge, " +
+                "vsIsoliert = :vsIsoliert, " +
+                "vsAnschlusshoehe = :vsAnschlusshoehe, " +
+                "vsSenklaenge = :vsSenklaenge, " +
+                "afType = :afType, " +
+                "afLeistung = :afLeistung, " +
+                "afAufstellungsraum = :afAufstellungsraum, " +
+                "afBrennstoff = :afBrennstoff, " +
+                "afBaujahr = :afBaujahr, " +
+                "afAuftellungsjahr = :afAuftellungsjahr, " +
+                "pruefdatum = :pruefdatum, " +
+                "idAuftrag = :idAuftrag " +
+                "WHERE id = :id");
+        query.setParameter("id", formular.getId());
+        query.setParameter("bauausfuehrender", formular.getBauausfuehrender());
+        query.setParameter("bauwerber", formular.getBauwerber());
+        query.setParameter("befundnr", formular.getBefundnr());
+        query.setParameter("imObjekt", formular.getImObjekt());
+        query.setParameter("idKunde", formular.getIdKunde());
+        query.setParameter("roaDurchmesserLichteWeite", formular.getRoaDurchmesserLichteWeite());
+        query.setParameter("roaMaterial", formular.getRoaMaterial());
+        query.setParameter("roaLaenge", formular.getRoaLaenge());
+        query.setParameter("roaSohlengeschoss", formular.getRoaSohlengeschoss());
+        query.setParameter("roaZugaenglichkeit", formular.getRoaZugaenglichkeit());
+        query.setParameter("vsDurchmesserLichteWeite", formular.getVsDurchmesserLichteWeite());
+        query.setParameter("vsMaterial", formular.getVsMaterial());
+        query.setParameter("vsWaaglaenge", formular.getVsWaaglaenge());
+        query.setParameter("vsIsoliert", formular.getVsIsoliert());
+        query.setParameter("vsAnschlusshoehe", formular.getVsAnschlusshoehe());
+        query.setParameter("vsSenklaenge", formular.getVsSenklaenge());
+        query.setParameter("afType", formular.getAfType());
+        query.setParameter("afLeistung", formular.getAfLeistung());
+        query.setParameter("afAufstellungsraum", formular.getAfAufstellungsraum());
+        query.setParameter("afBrennstoff", formular.getAfBrennstoff());
+        query.setParameter("afBaujahr", formular.getAfBaujahr());
+        query.setParameter("afAuftellungsjahr", formular.getAfAuftellungsjahr());
+        query.setParameter("pruefdatum", formular.getPruefdatum());
+        query.setParameter("idAuftrag", formular.getIdAuftrag());
+
+
+        query.executeUpdate();
+        em.getTransaction().commit();
+
+        return "true";
+    }
 }

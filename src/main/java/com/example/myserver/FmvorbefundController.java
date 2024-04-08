@@ -102,4 +102,48 @@ public class FmvorbefundController {
 
         return "true";
     }
+    @POST
+    @Path("/updateNoImage")
+    public String updateNoImage(String jsonString){
+        EntityFmvorbefund formular = gson.fromJson(jsonString, EntityFmvorbefund.class);
+        em.getTransaction().begin();
+
+        Query query = em.createQuery("UPDATE EntityFmvorbefund " +
+                "SET auftragid = :auftragid, objekt = :objekt, rauchfangbauart = :rauchfangbauart, " +
+                "fanghoehem = :fanghoehem, fanghoehecm = :fanghoehecm, fanglaenge = :fanglaenge, " +
+                "betriebsdich = :betriebsdich, fangaufsatz = :fangaufsatz, fangbauart2 = :fangbauart2, " +
+                "hoeheanschlussstelle = :hoeheanschlussstelle, angeschlossenefeu = :angeschlossenefeu, " +
+                "verlegtesver = :verlegtesver, reinigungsoeffnungerf = :reinigungsoeffnungerf, " +
+                "artderfeu = :artderfeu, anf1 = :anf1, anf2 = :anf2, anf3 = :anf3, " +
+                "anf4 = :anf4, hoeheanschlussstellebool = :hoeheanschlussstellebool " +
+                "WHERE fmvorbefundid = :fmvorbefundid");
+
+        // Setting parameters for the query
+        query.setParameter("auftragid", formular.getAuftragid());
+        query.setParameter("objekt", formular.getObjekt());
+        query.setParameter("rauchfangbauart", formular.getRauchfangbauart());
+        query.setParameter("fanghoehem", formular.getFanghoehem());
+        query.setParameter("fanghoehecm", formular.getFanghoehecm());
+        query.setParameter("fanglaenge", formular.getFanglaenge());
+        query.setParameter("betriebsdich", formular.getBetriebsdich());
+        query.setParameter("fangaufsatz", formular.getFangaufsatz());
+        query.setParameter("fangbauart2", formular.getFangbauart2());
+        query.setParameter("hoeheanschlussstelle", formular.getHoeheanschlussstelle());
+        query.setParameter("angeschlossenefeu", formular.getAngeschlossenefeu());
+        query.setParameter("verlegtesver", formular.getVerlegtesver());
+        query.setParameter("reinigungsoeffnungerf", formular.getReinigungsoeffnungerf());
+        query.setParameter("artderfeu", formular.getArtderfeu());
+        query.setParameter("anf1", formular.getAnf1());
+        query.setParameter("anf2", formular.getAnf2());
+        query.setParameter("anf3", formular.getAnf3());
+        query.setParameter("anf4", formular.getAnf4());
+        query.setParameter("hoeheanschlussstellebool", formular.getHoeheanschlussstellebool());
+        query.setParameter("fmvorbefundid", formular.getFmvorbefundid());
+
+
+        query.executeUpdate();
+        em.getTransaction().commit();
+
+        return "true";
+    }
 }

@@ -1,6 +1,6 @@
 package com.example.myserver;
 
-import com.example.myserver.model.ClassKunde;
+
 import com.example.myserver.model.EntityAuftrag;
 import com.example.myserver.model.EntityKunde;
 import com.google.gson.Gson;
@@ -66,7 +66,8 @@ public class KundeController {
 
 
         em.getTransaction().begin();
-        Query query = em.createQuery("update EntityKunde set vorname = :vorname, nachname = :nachname, postleitzahl = :plz, ort = :ort, strasse = :str, hausnummer = :hsnr, tuer = :tuer, telnummer = :tnr where kundeid = :kundennr");
+        Query query = em.createQuery("update EntityKunde set vorname = :vorname, nachname = :nachname, postleitzahl = :plz, " +
+                "ort = :ort, strasse = :str, hausnummer = :hsnr, tuer = :tuer, telnummer = :tnr where kundeid = :kundennr");
         for (int i = 0; i < list.size(); i++) {
             query.setParameter("vorname", list.get(i).getVorname());
             query.setParameter("nachname", list.get(i).getNachname());

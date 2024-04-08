@@ -31,6 +31,7 @@ public class AuftragController {
         List<Integer> auftragList = queryAuftrag.getResultList();
         int auftragId = auftragList.get(0);
         createFormular(eg, auftragId);
+        em.getTransaction().commit();
         return String.valueOf(auftragId);
     }
 
@@ -69,13 +70,13 @@ public class AuftragController {
             em.persist(formular);
         }
         em.flush();
-        em.getTransaction().commit();
     }
 
     @POST
     @Path("/neuFromAndroid")
     @Consumes(MediaType.APPLICATION_JSON)
     public String neuFromAndroid(String jsonString){
+        //Splitten vom Auftrag Objekt und Dokument
         String[] jsonStringSplit = jsonString.split(";");
         em.getTransaction().begin();
         EntityAuftrag eg = gson.fromJson(jsonStringSplit[0], EntityAuftrag.class);
@@ -84,13 +85,16 @@ public class AuftragController {
         Query queryAuftrag = em.createQuery("select ea.auftragid from EntityAuftrag ea ORDER BY ea.auftragid DESC");
         List<Integer> auftragList = queryAuftrag.getResultList();
         int auftragId = auftragList.get(0);
+        //Erstellen vom Dokument
         if (eg.getFormular().equals("Endbefund")) {
             EntityFmendbefund formular = gson.fromJson(jsonStringSplit[1], EntityFmendbefund.class);
             formular.setIdAuftrag(auftragId);
+            formular.setId(0);
             em.persist(formular);
         } else if (eg.getFormular().equals("Erhebungsblatt")) {
             EntityFmerhebungsblatt formular = gson.fromJson(jsonStringSplit[1], EntityFmerhebungsblatt.class);
             formular.setAuftragid(auftragId);
+            formular.setFmerhebungsblattid(0);
             em.persist(formular);
         } else if (eg.getFormular().equals("Maengelmeldungen")) {
             EntityFmmangelmldg formular = gson.fromJson(jsonStringSplit[1], EntityFmmangelmldg.class);
@@ -100,22 +104,27 @@ public class AuftragController {
         } else if (eg.getFormular().equals("Gasbefund")) {
             EntityFmgasbefund formular = gson.fromJson(jsonStringSplit[1], EntityFmgasbefund.class);
             formular.setAuftragid(auftragId);
+            formular.setFmgasbefundid(0);
             em.persist(formular);
         } else if (eg.getFormular().equals("Kehrverweigerung")) {
             EntityFmkehrversgemeinde formular = gson.fromJson(jsonStringSplit[1], EntityFmkehrversgemeinde.class);
             formular.setAuftragid(auftragId);
+            formular.setFmkehrversgemeindeid(0);
             em.persist(formular);
         } else if (eg.getFormular().equals("Prüfprotokoll+B8201")) {
             EntityPruefprotokollb8201 formular = gson.fromJson(jsonStringSplit[1], EntityPruefprotokollb8201.class);
             formular.setAuftragid(auftragId);
+            formular.setPruefprotokollb8201Id(0);
             em.persist(formular);
         } else if (eg.getFormular().equals("Prüfprotokoll")) {
             EntityPruefprotokoll formular = gson.fromJson(jsonStringSplit[1], EntityPruefprotokoll.class);
             formular.setAuftragid(auftragId);
+            formular.setPruefprotokollid(0);
             em.persist(formular);
         } else if (eg.getFormular().equals("Vorbefund Mitarbeiter")) {
             EntityFmvorbefund formular = gson.fromJson(jsonStringSplit[1], EntityFmvorbefund.class);
             formular.setAuftragid(auftragId);
+            formular.setFmvorbefundid(0);
             em.persist(formular);
         }
         em.flush();
@@ -187,16 +196,39 @@ public class AuftragController {
         em.getTransaction().begin();
         Type mapType = new TypeToken<List<EntityAuftrag>>() {}.getType();
         List<EntityAuftrag> list = gson.fromJson(jsonString, mapType);
+        //Beide listen von Auftrag Objekten in die gleiche Reihenfolge bringen
         list.sort(Comparator.comparing(x -> x.getAuftragid()));
         List<EntityAuftrag> currentList = em.createQuery("select e from EntityAuftrag e ORDER BY e.auftragid asc ").getResultList();
-
-
         for (int i = 0; i < list.size(); i++) {
+            //Vergleichen ob das Formular in der Datenbank noch mit dem Formular in der neuen Liste übereinstimmt
             if(!list.get(i).getFormular().equals(currentList.get(i).getFormular())){
-
+                Query query = em.createQuery("select ea from EntityAuftrag ea where ea.auftragid = :auftragid");
+                query.setParameter("auftragid", list.get(i).getAuftragid());
+                List<EntityAuftrag> eaList = query.getResultList();
+                //Alle if Verzweigungen
+                if (eaList.get(0).getFormular().equals("Endbefund")) {
+                    query = em.createQuery("Delete from EntityFmendbefund where idAuftrag = :auftragid");
+                } else if (eaList.get(0).getFormular().equals("Erhebungsblatt")) {
+                    query = em.createQuery("Delete from EntityFmerhebungsblatt where auftragid = :auftragid");
+                } else if (eaList.get(0).getFormular().equals("Maengelmeldungen")) {
+                    query = em.createQuery("Delete from EntityFmmangelmldg where auftragid = :auftragid");
+                } else if (eaList.get(0).getFormular().equals("Gasbefund")) {
+                    query = em.createQuery("Delete from EntityFmgasbefund where auftragid = :auftragid");
+                } else if (eaList.get(0).getFormular().equals("Kehrverweigerung")) {
+                    query = em.createQuery("Delete from EntityFmkehrversgemeinde where auftragid = :auftragid");
+                } else if (eaList.get(0).getFormular().equals("Prüfprotokoll+B8201")) {
+                    query = em.createQuery("Delete from EntityPruefprotokollb8201 where auftragid = :auftragid");
+                } else if (eaList.get(0).getFormular().equals("Prüfprotokoll")) {
+                    query = em.createQuery("Delete from EntityPruefprotokoll where auftragid = :auftragid");
+                } else if (eaList.get(0).getFormular().equals("Vorbefund Mitarbeiter")) {
+                    query = em.createQuery("Delete from EntityFmvorbefund where auftragid = :auftragid");
+                }
+                query.setParameter("auftragid", list.get(i).getAuftragid());
+                query.executeUpdate();
+                createFormular(list.get(i), list.get(i).getAuftragid());
             }
         }
-
+        //Aktualisieren der Aufträge
         Query query = em.createQuery("update EntityAuftrag set kundeid = :kundeid, formular = :formular, postleitzahl = :postleitzahl, ort = :ort, strasse = :strasse, hausnummer = :hausnummer, tuer = :tuer, telnummer = :telnummer, datum = :datum, anmerkung = :anmerkung where auftragid = :auftragid");
         for (int i = 0; i < list.size(); i++) {
             query.setParameter("auftragid", list.get(i).getAuftragid());
@@ -214,7 +246,6 @@ public class AuftragController {
         }
         em.getTransaction().commit();
         return "true";
-
     }
 
     public void refreshTable(){
